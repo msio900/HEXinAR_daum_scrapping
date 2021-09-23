@@ -5,7 +5,8 @@ import os
 import sqlite3
 import numpy as np
 
-daumNews_dir = glob.glob('../daum_news_dataset/*.csv')
+daumNews_dir = glob.glob('daum_news_dataset/*.csv')
+
 
 def preprocessing_articles(data):
     contents_new = []
@@ -29,7 +30,7 @@ def preprocessing_articles(data):
         content_prep = list(map(lambda s: re.sub("\[.*\]", "", s), content_prep))  # [스포츠서울]
         content_prep = list(map(lambda s: re.sub("\(.*\=.*\)", "", s), content_prep))  # (서울=뉴시스)
         content_prep = list(map(lambda s: re.sub("\【.*\=.*\】", "", s), content_prep))  # 【파이낸셜뉴스 포천=강근주 기자】
-        content_prep = list(map(lambda s: re.sub('[^A-Za-z가-힣]', ' ', s), content_prep))  # 한글 제외 영문, 한자, 숫자, 특수문자 모두 제거
+        content_prep = list(map(lambda s: re.sub('[^가-힣]', ' ', s), content_prep))  # 한글 제외 영문, 한자, 숫자, 특수문자 모두 제거
 
         contents_new.append(''.join(content_prep))
 
@@ -39,7 +40,7 @@ def preprocessing_articles(data):
 
 
 if __name__ == "__main__":
-    con = sqlite3.connect("scrapping.db")
+    con = sqlite3.connect("kr_scrapping.db")
     c = con.cursor()
     c.execute('DROP TABLE IF EXISTS `news_dummy`;')
     c.execute('''
@@ -50,7 +51,6 @@ if __name__ == "__main__":
                 `url` TEXT NOT NULL,
                 `news_content` TEXT NOT NULL
             );
-
     ''')
     result_csv = pd.DataFrame()
     cnt = 0

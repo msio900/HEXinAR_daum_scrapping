@@ -4,6 +4,9 @@ glob_test/
 glob_test2/
 scrapping.db
 test.csv
+kr_scrapping.db
+*.db
+*.csv
 
 
 
